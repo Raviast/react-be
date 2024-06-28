@@ -8,7 +8,7 @@ async function deletectrl(req, res, next) {
         const userData = await userService.deleteUser(id)
         return res.send(userData)
     } catch (error) {
-        if (error.message) return res.status(400).send(error.message)
+        if (error.message) return res.status(400).send({message : error.message})
         return res.status(500).send("internal server error")
     }
 }

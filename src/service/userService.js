@@ -10,6 +10,7 @@ class UsersService {
 
     async login(body) {
         try {
+            console.log("jjjjjjjjjjjjjj")
             const { email, password } = body
             const user = (await this.userDb.getByEmail(email))?.[0]
 
@@ -83,6 +84,7 @@ class UsersService {
             const { email, password, name, phoneNumber, countryCode, uid, accessToken } = body;
             console.log("ravi:::", uid)
             const userExist = await this.userDb.getByID(uid)
+            console.log("1::::::::",userExist);
             if (!userExist) throw ({ message: `user Not found` });
 
             const emailExist = (await this.userDb.getByEmail(email))?.[0]
@@ -90,24 +92,26 @@ class UsersService {
 
             const phoneExist = (await this.userDb.getByQuery({ phoneNumber }))?.[0]
             if (phoneExist) throw ({ message: `This phone number ${phoneNumber} is already exists` })
-            // const user = UserDb.getByEmail(email);
-
-
-            const { hash, salt } = await this.getHashSalt(password)
-
-            const user_data = {
-                email,
-                password: {
-                    salt: salt,
-                    hash: hash
-                },
-                name,
-                phoneNumber,
-                countryCode: countryCode
+            
+            let updated_data = {};
+            if (email !== userExist?.email) {
+                updated_data.email = email;
+            } 
+            if (name !== userExist?.name) {
+                updated_data.name = name;
             }
-            console.log(user_data);
+            if (phoneNumber !== userExist?.phoneNumber) {
+                updated_data.phoneNumber = phoneNumber;
+            }
+            console.log(updated_data);
+            
+            // const update_data = {
+            //     email,
+            //     name,
+            //     phoneNumber,
+            // }
 
-            const user = await this.userDb.update(uid, user_data);
+            const user = await this.userDb.update(uid, updated_data);
 
             const response = Utitlity.userResponse(user)
 

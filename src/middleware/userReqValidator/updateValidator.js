@@ -12,7 +12,7 @@ const Joi = require("joi")
 function updateValidator(req, res, next) {
     try {
         //spread operator
-        const body = { ...req.body, uid: req.params.uid, acccessToken: req.headers.acccessToken };
+        const body = { ...req.body, uid: req.params.uid, accessToken: req.headers.accesstoken };
         console.log(":::::::::::;dddd", body)
         const schema = Joi.object({
             name: Joi.string().min(5).max(30).optional(),
@@ -20,7 +20,7 @@ function updateValidator(req, res, next) {
             countryCode: Joi.string().length(3).optional(),
             phoneNumber: Joi.string().length(10).pattern(/^[0-9]+$/).optional(),
             uid: Joi.string().length(24).required(),
-            acccessToken: Joi.string().required(),
+            accessToken: Joi.string().required(),
         }).or("name", "email", "phoneNumber","countryCode")
 
         const { error, value } = schema.validate(body);

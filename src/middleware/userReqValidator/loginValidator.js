@@ -15,9 +15,10 @@ function loginValidator(req, res, next) {
         console.log(":::::::::::;dddd")
         const schema = Joi.object({
             email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
-            password: Joi.string().length(6).required(),
+            password: Joi.string().min(5).max(30).required(),
 
         })
+
         const { error, value } = schema.validate(body);
 
         if (error) {

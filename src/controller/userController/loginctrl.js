@@ -8,7 +8,8 @@ async function loginctrl(req, res, next) {
         const userData = await userService.login(body)
         return res.send(userData)
     } catch (error) {
-        if (error.message) return res.status(400).send(error.message)
+        console.log(error);
+        if (error.message) return res.status(400).send({message : error.message})
         return res.status(500).send("internal server error")
     }
 }
